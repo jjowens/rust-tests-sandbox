@@ -21,23 +21,17 @@ enum Commands {
 
 fn main() -> Result<(), String> {
     let args = Args::parse();
-
-    let mut res = Ok(()) ;
-
     match args.command {
         Some(Commands::HelloWorld { name }) => {
-            res = say_hello_world(name);
+            say_hello_world(name)
         },
         Some(Commands::WrongCommand) => {
-            res = Err(String::from("It's brokem"));
-            panic!("It's broken");
+           Err(String::from("It's brokem"))
         }
         None => {
-            res = Err(String::from("no command given"));
+           Err(String::from("no command given"))
         }
     }
-
-    res
 }
 
 
