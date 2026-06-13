@@ -14,28 +14,45 @@ enum Commands {
         /// Set file path to open image
         #[arg(long, default_value = "")]
         name: String,
-    }
+    },
+    /// testing wrong command
+    WrongCommand,
 }
 
-fn main() {
+fn main() -> Result<(), String> {
     let args = Args::parse();
+
+    let mut res = Ok(()) ;
 
     match args.command {
         Some(Commands::HelloWorld { name }) => {
-            let _ = say_hello_world(name).unwrap();
+            res = say_hello_world(name);
         },
+        Some(Commands::WrongCommand) => {
+            res = Err(String::from("It's brokem"));
+            panic!("It's broken");
+        }
         None => {
-            println!("Not implemented!");
-            std::process::exit(1);
+            res = Err(String::from("no command given"));
         }
     }
+
+    res
 }
 
-fn say_hello_world(name: String) -> std::io::Result<()> {
-    let final_name = if name.is_empty() { "friend" } else { &name };
-    println!("Hello, {}!", final_name);
 
-    Ok(())
+
+fn say_hello_world(name: String) -> Result<(), String> {
+    if !name.is_empty() && (name.len() == 1 || name.len() > 10) {
+        Err("Name cannot be less than 2 characters or more than 10 characters".to_string())
+    } else if name.to_lowercase() == "fred" {
+        Err("Fred cannot be greeted".to_string())
+    } else {
+        let final_name = if name.is_empty() { "friend" } else { &name };
+        println!("Hello, {}!", final_name);
+
+        Ok(())
+    }
 }
 
 
