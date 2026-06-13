@@ -67,6 +67,17 @@ mod simple_test {
         println!("stdout: {}", String::from_utf8_lossy(&output.stderr));
         assert_eq!(!output.status.success(), true);
         assert!(String::from_utf8_lossy(&output.stderr).contains("Fred cannot be greeted"));
+    }
+
+    #[test]
+    fn no_command_should_error() {
+        let mut cmd = Command::cargo_bin(APP_NAME).unwrap();
+
+        let output = cmd.output().unwrap();
+
+        println!("stdout: {}", String::from_utf8_lossy(&output.stderr));
+        assert_eq!(!output.status.success(), true);
+        assert!(String::from_utf8_lossy(&output.stderr).contains("no command given"));
 
     }
 
